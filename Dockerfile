@@ -1,7 +1,7 @@
 # Use Python 3.13 slim image as base
 FROM python:3.13-slim
 
-# Set working directory
+# Set working directory to project root (where pyproject.toml and the `app` package live)
 WORKDIR /app
 
 # Install system dependencies
@@ -15,17 +15,14 @@ RUN pip install uv
 # Copy dependency files
 COPY pyproject.toml uv.lock ./
 
-# Install dependencies using uv
+# Install dependencies using uv (includes uvicorn from pyproject.toml)
 RUN uv sync --frozen --no-dev
 
-# Install uvicorn to run the FastAPI app
-RUN uv pip install uvicorn
-
-# Copy application code
+# Copy application code into the image
 COPY . .
 
 # Expose port 8000 (default FastAPI port)
 EXPOSE 8000
 
-# Run the FastAPI application with uvicorn
+# Run the FastAPI application from the project root so `app` is importable
 CMD ["uv", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

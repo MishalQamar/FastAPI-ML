@@ -44,6 +44,22 @@ services:
     networks:
       - backend
 
+  streamlit:
+    build: .
+    container_name: streamlit-app
+    command: uv run streamlit run streamlit_app.py --server.port=8501 --server.address=0.0.0.0
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./streamlit_app.py:/app/streamlit_app.py
+      - ./data:/app/data
+    environment:
+      - API_BASE_URL=http://api:8000
+    depends_on:
+      - api
+    networks:
+      - backend
+
 networks:
   backend:
     driver: bridge

@@ -14,4 +14,5 @@ class LoggingMiddleware(BaseHTTPMiddleware):
             body.decode("utf-8", errors="replace"),
         )
         response = await call_next(request)
+        logging.info("Response: %s", response.status_code)
         return response
