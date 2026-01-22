@@ -117,7 +117,7 @@ def main():
 
         price = predict(st.session_state.token, api_key, payload)
         if price is not None:
-            st.success(f"Predicted Price: ₹{price:,.0f}")
+            st.success(f"Predicted Price: £{price:,.2f}")
 
 
 if __name__ == "__main__":
